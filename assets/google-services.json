@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "371236077302",
+    "project_id": "tipngoal",
+    "storage_bucket": "tipngoal.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:371236077302:android:ddfdb500ff91276404b6d7",
+        "android_client_info": {
+          "package_name": "com.tipngoal.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz5kGkS3n1J36nnt_fq-gmj62uiIJ4RTQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
