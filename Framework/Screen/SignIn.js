@@ -1,7 +1,7 @@
-import { Alert, SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useState, } from 'react'
 import { Theme } from '../Components/Theme.js';
-import { Button, } from 'react-native-paper';
+import { Button, TextInput, } from 'react-native-paper';
 import { Formik } from 'formik';
 import * as yup from "yup"
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -25,7 +25,7 @@ export function SignIn({ navigation }) {
   const [ passwordVisible, setPasswordVisible ] = useState(false);
 
   return (
-    <View style={{ flex: 1, backgroundColor: Theme.colors.black }}>
+    <View style={{ flex: 1, backgroundColor: Theme.colors.greenLight }}>
       <View style={styles.container}>
         <Formik
           initialValues={{ email: "", password: "" }}
@@ -48,60 +48,47 @@ export function SignIn({ navigation }) {
         >
           {(prop) => {
             return (
-              <View style={{ flex: 1, justifyContent: "center", }}>
+              <View style={{ flex: 1, justifyContent: "center",  }}>
 
 
                 <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 3, marginBottom: 10 }}>
-                  <Text style={{ alignItems: "center", textAlign: "center", fontSize: 30, fontFamily: Theme.fonts.text900, color: Theme.colors.green }}>Login </Text>
-                  <FontAwesomeIcon icon={faArrowRightToBracket} size={28} color='green' />
+                  <Text style={{ alignItems: "center", textAlign: "center", fontSize: 30, fontFamily: Theme.fonts.text900, color: Theme.colors.black }}>Login </Text>
+                  <FontAwesomeIcon icon={faArrowRightToBracket} size={28}  />
                 </View>
 
                 <View>
-
                   <TextInput
-                    placeholder="Enter Email"
-                    placeholderTextColor={Theme.colors.green}
-                    style={styles.inputButton}
-                    autoCapitalize='none'
+                    label={'Enter Email'}
                     autoCorrect={false}
-                    onChangeText={prop.handleChange("email")}
-                    onBlur={prop.handleBlur("email")}
-                    value={prop.values.email}
-                  />
+                    autoCapitalize='none'
+                     value={prop.values.email}
+                     onChangeText={prop.handleChange("email")}
+                    left={<TextInput.Icon icon='account' color='green'/>}
+                    mode="outlined"
+                    activeOutlineColor='green'
+                    
+                />
                   <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>{prop.touched.email && prop.errors.email}</Text>
                 </View>
-
-                <View style={{ flexDirection: 'row', alignItems: "center", justifyContent: "space-between", padding:13, backgroundColor:"white",borderWidth: 2,borderRadius: 20 }}>
-
-                  <TextInput
-                    placeholder="Enter Password"
-                    placeholderTextColor={Theme.colors.green}
-                    style={{}}
+                <TextInput
+                    activeOutlineColor='green'
                     autoCapitalize='none'
                     autoComplete='off'
                     autoCorrect={false}
-                    secureTextEntry={!passwordVisible}
-                    keyboardType='default'
-                    onChangeText={prop.handleChange("password")}
                     onBlur={prop.handleBlur("password")}
+                    secureTextEntry={!passwordVisible}
+                    label={'Enter Password'}
                     value={prop.values.password}
-                  />
-                  <TouchableOpacity
-                    onPress={() => setPasswordVisible(!passwordVisible)}
-                  
-                  >
-                    <FontAwesomeIcon
-                      icon={passwordVisible ? faEye : faEyeSlash}
-                      size={20}
-                      color={Theme.colors.black}
-                    />
-                  </TouchableOpacity>
-                </View>
+                    onChangeText={prop.handleChange("password")}
+                    left={<TextInput.Icon icon='form-textbox-password'color='green'/>}
+                    right={<TextInput.Icon icon={passwordVisible ? 'eye-off' : 'eye'} onPress={() => setPasswordVisible(!passwordVisible)} color='green'/>}
+                    mode="outlined"
+                />
                   <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>{prop.touched.password && prop.errors.password}</Text>
 
 
                 <TouchableOpacity onPress={() => { navigation.navigate("ForgotPassword") }}>
-                  <Text style={{ color: Theme.colors.light.bg2, fontFamily: Theme.fonts.text700, alignSelf: "flex-end", padding: 6 }} >Forgot Password?</Text>
+                  <Text style={{  fontFamily: Theme.fonts.text700, alignSelf: "flex-end", padding: 6 }} >Forgot Password?</Text>
                 </TouchableOpacity>
 
 
@@ -110,9 +97,9 @@ export function SignIn({ navigation }) {
                   // onPress={() => { navigation.navigate("HomeScreen") }}
                   onPress={prop.handleSubmit}
                   style={styles.btn}>
-                  <Text style={{ fontSize: 20, fontFamily: Theme.fonts.text900, color: Theme.colors.green }}>SignIn</Text>
+                  <Text style={{ fontSize: 20, fontFamily: Theme.fonts.text900, color: 'black' }}>SignIn</Text>
                   <Animatable.View animation="zoomInRight" iterationCount="infinite">
-                    <FontAwesomeIcon icon={faArrowRight} color="white" />
+                    <FontAwesomeIcon icon={faArrowRight}  />
                   </Animatable.View>
 
                 </TouchableOpacity>
@@ -129,17 +116,17 @@ export function SignIn({ navigation }) {
       <View style={{ marginVertical: 50, justifyContent: "center", flexDirection: "column", gap: 4 }}>
 
 
-        <Animatable.View animation="bounceIn" iterationCount="infinite">
+        {/* <Animatable.View animation="bounceIn" iterationCount="infinite">
           <FontAwesomeIcon icon={faArrowDown} size={20} style={{ color: Theme.colors.light.bg2, alignSelf: "center" }} />
-        </Animatable.View>
+        </Animatable.View> */}
 
 
 
 
         <TouchableOpacity
           onPress={() => { navigation.navigate("SignUp") }}
-          style={{ backgroundColor: "black", padding: 10, borderRadius: 20, alignItems: "center", marginHorizontal: 10, justifyContent: "flex-end", borderColor: Theme.colors.green, borderWidth: 2 }}>
-          <Text style={{ color: Theme.colors.lightGreen, fontFamily: Theme.fonts.text900, fontSize: 20 }}>Create Account</Text>
+          style={{ backgroundColor: "white", padding: 10, borderRadius: 20, alignItems: "center", marginHorizontal: 10, justifyContent: "flex-end", borderColor: Theme.colors.green, borderWidth: 2 }}>
+          <Text style={{ color: Theme.colors.green, fontFamily: Theme.fonts.text900, fontSize: 20 }}>Create Account</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -174,7 +161,7 @@ const styles = StyleSheet.create({
     marginVertical: 2
   },
   btn: {
-    backgroundColor: Theme.colors.black,
+    backgroundColor: Theme.colors.green,
     borderWidth: 2,
     borderRadius: 20,
     padding: 12,
@@ -182,7 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     gap: 6,
-    borderColor: Theme.colors.green
+    borderColor: "black"
     // marginBottom: 30,
 
   },

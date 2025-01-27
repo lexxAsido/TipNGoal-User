@@ -1,6 +1,6 @@
-import { SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useState } from 'react'
-import { Button, Switch } from 'react-native-paper';
+import { Button, Switch, TextInput } from 'react-native-paper';
 import { Theme } from '../Components/Theme';
 import { Formik } from 'formik';
 import * as yup from "yup";
@@ -20,6 +20,7 @@ const validation = yup.object({
   firstname: yup.string().min(2).max(20).required(),
   lastname: yup.string().min(2).max(20).required(),
   username: yup.string().min(6).max(15).required(),
+  phone: yup.string().required(),
 })
 
 export function SignUp({ navigation }) {
@@ -27,7 +28,7 @@ export function SignUp({ navigation }) {
   const [passwordVisible, setPasswordVisible ] = useState(false);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Theme.colors.black }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Theme.colors.greenLight }}>
       <View style={styles.container}>
 
         <Formik
@@ -64,28 +65,32 @@ export function SignUp({ navigation }) {
           {(prop) => {
             return (
               <View style={{ flex: 1, justifyContent: "center", }}>
-                <Text style={{ fontFamily:Theme.fonts.text800, fontSize:35, color:Theme.colors.light.bg2, textAlign: "center", 
-                     fontFamily: Theme.fonts.text600, marginBottom:20, }}>Create Account</Text>
+                <Text style={{  fontSize:35, textAlign: "center", 
+                     fontFamily: Theme.fonts.text800, marginBottom:10, }}>Create Account</Text>
                 <View style={styles.label}>
-                  <Text style={{ fontFamily: Theme.fonts.text700, color:Theme.colors.light.bg2 }}>First Name</Text>
-                  <TextInput
-                    
-                    placeholderTextColor={Theme.colors.greenDark}
-                    style={styles.inputButton}
+                  
+                  
+                 <TextInput
+                    label={'Enter First Name'}
+                    autoCorrect={false}
+                    value={prop.values.firstname}
                     onChangeText={prop.handleChange('firstname')}
                     onBlur={prop.handleBlur("firstname")}
-                    value={prop.values.firstname}
-                  />
+                    // left={<TextInput.Icon icon='account' color='green'/>}
+                    mode="outlined"
+                    activeOutlineColor='green'
+                    
+                />
                  
                   <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>{prop.touched.firstname && prop.errors.firstname}</Text>
 
                 </View>
                 <View style={styles.label}>
-                  <Text style={{ fontFamily: Theme.fonts.text700, color:Theme.colors.light.bg2 }}>Last Name</Text>
                   <TextInput
-                    
-                    placeholderTextColor={Theme.colors.greenDark}
-                    style={styles.inputButton}
+                    label={'Enter Last Name'}
+                    autoCorrect={false}
+                    mode="outlined"
+                    activeOutlineColor='green'
                     onChangeText={prop.handleChange('lastname')}
                     onBlur={prop.handleBlur("lastname")}
                     value={prop.values.lastname}
@@ -93,14 +98,14 @@ export function SignUp({ navigation }) {
                   <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>{prop.touched.lastname && prop.errors.lastname}</Text>
 
                 </View>
-                <View style={styles.label}>
-                  <Text style={{ fontFamily: Theme.fonts.text700, color:Theme.colors.light.bg2 }}>E-mail</Text>
+                
                   <TextInput
                     // placeholder='Enter E-mail'
-                    placeholderTextColor={Theme.colors.greenDark}
-                    style={styles.inputButton}
-                    autoCapitalize='none'
+                    label={'Enter Email'}
                     autoCorrect={false}
+                    mode="outlined"
+                    activeOutlineColor='green'
+                    autoCapitalize='none'
                     onChangeText={prop.handleChange('email')}
                     onBlur={prop.handleBlur("email")}
                     value={prop.values.email}
@@ -108,89 +113,69 @@ export function SignUp({ navigation }) {
                   <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>{prop.touched.email && prop.errors.email}</Text>
 
 
-                </View>
+              
                 
 
-                <View style={[styles.label, {}]}>
-                  <Text style={{ fontFamily: Theme.fonts.text700, color:Theme.colors.light.bg2 }}>Username</Text>
+               
                   <TextInput
-                    // placeholder='Enter Username'
-                    placeholderTextColor={Theme.colors.greenDark}
-                    style={styles.inputButton}
+                    label={'Create UserName'}
+                    autoCorrect={false}
+                    mode="outlined"
+                    activeOutlineColor='green'
+                    autoCapitalize='none'
                     onChangeText={prop.handleChange('username')}
                     onBlur={prop.handleBlur("username")}
                     value={prop.values.username}
                   />
                   <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>{prop.touched.username && prop.errors.username}</Text>
 
-                </View>
+               
 
-                <View style={styles.label}>
-  <Text style={{ fontFamily: Theme.fonts.text700, color: Theme.colors.light.bg2 }}>Password</Text>
-  <View style={{
-    flexDirection: 'row',
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 2,
-    backgroundColor: "white",
-    borderWidth: 2,
-    borderColor: Theme.colors.green,
-  }}>
+      
     <TextInput
-      style={{ // flex: 1, 
-        padding: 10, fontFamily: Theme.fonts.text500, color: Theme.colors.black,}}
       onChangeText={prop.handleChange('password')}
       onBlur={prop.handleBlur("password")}
       secureTextEntry={!passwordVisible}
       value={prop.values.password}
       autoCapitalize="none" 
       autoCorrect={false}
-      placeholder="Enter Password"
-      placeholderTextColor={Theme.colors.light.bg2} 
+     label={'Create Password'} 
+      mode="outlined"
+      activeOutlineColor='green'
+      // left={<TextInput.Icon icon='form-textbox-password'color='green'/>}
+      right={<TextInput.Icon icon={passwordVisible ? 'eye-off' : 'eye'} onPress={() => setPasswordVisible(!passwordVisible)} color='green'/>}
     />
-    <TouchableOpacity
-      onPress={() => setPasswordVisible(!passwordVisible)}
-      style={{ marginHorizontal: 10 }}
-    >
-      <FontAwesomeIcon
-        icon={passwordVisible ? faEye : faEyeSlash}
-        size={20}
-        color={Theme.colors.black}
-      />
-    </TouchableOpacity>
-  </View>
-</View>
+
 <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>
   {prop.touched.password && prop.errors.password}
 </Text>
 
-                <View style={styles.label}>
-                  <Text style={{ fontFamily: Theme.fonts.text700, color:Theme.colors.light.bg2 }}>Phone</Text>
+                
                   <TextInput
-                    
-                    placeholderTextColor={Theme.colors.greenDark}
-                    style={styles.inputButton}
-                    autoCapitalize='none'
+                    label={'Enter Phone Number'}
                     autoCorrect={false}
+                    mode="outlined"
+                    activeOutlineColor='green'
+                    autoCapitalize='none'
                     onChangeText={prop.handleChange('phone')}
                     onBlur={prop.handleBlur("phone")}
                     value={prop.values.phone}
                   />
-                  <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>{prop.touched.email && prop.errors.email}</Text>
-                </View>
+                  <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>{prop.touched.phone && prop.errors.phone}</Text>
+               
                 <TouchableOpacity
                     onPress={prop.handleSubmit}
-                    style={{ backgroundColor: Theme.colors.green, padding: 10, borderRadius: 20, alignItems: "center"}}>
-                    <Text style={{ color: Theme.colors.light.bg2, fontFamily: Theme.fonts.text900, fontSize: 20 }}>SignUp</Text>
+                    style={{ backgroundColor: Theme.colors.green, padding: 10, borderRadius: 20, alignItems: "center", borderWidth: 2, }}>
+                    <Text style={{  fontFamily: Theme.fonts.text900, fontSize: 20,  }}>SignUp</Text>
                 </TouchableOpacity>
 
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                  <Text style={{ fontSize: 15, marginVertical: 30, fontFamily: Theme.fonts.text500, color:Theme.colors.light.bg2 }}>Already have an account?</Text>
+                  <Text style={{ fontSize: 15, marginVertical: 30, fontFamily: Theme.fonts.text500,  }}>Already have an account?</Text>
                   
                   <View>
                     <Animatable.View animation="flash" iterationCount="infinite">
-                    <Button mode='text' textColor={Theme.colors.green} onPress={() => { navigation.navigate("SignIn") }}>Login Here
-                    <FontAwesomeIcon icon={faThumbsUp} size={25} style={{color:Theme.colors.green}}/>
+                    <Button mode='text' textColor='green' onPress={() => { navigation.navigate("SignIn") }}>Login Here
+                    <FontAwesomeIcon icon={faThumbsUp} size={25} />
                   </Button>
                     </Animatable.View>
                   </View>

@@ -1,10 +1,11 @@
-import { Alert, Modal, Pressable, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Modal, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useState } from 'react'
 import { Theme } from '../Components/Theme'
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { errorMessage } from '../Components/formatErrorMessage';
 import { AppContext } from '../Components/globalVariables';
 import { auth } from '../Firebase/Settings';
+import { TextInput } from 'react-native-paper';
 
 
 export function ForgotPassword({ navigation, }) {
@@ -35,14 +36,17 @@ export function ForgotPassword({ navigation, }) {
                     <Text style={styles.header}>Forgot Account Password</Text>
                     
                     <Text style={styles.text}>Please enter your account email, and a password reset link will be sent to your email.</Text>
-
-                    <Text style={styles.placeholder}>Email Address</Text>
-                    <TextInput
-                        style={[styles.input, { marginBottom: 10,}]}
-                        autoCapitalize="none"
-                        onChangeText={(inp) => setEmail(inp)}
-                    />
-
+                    
+                  <TextInput
+                    label={'Enter Email'}
+                    autoCorrect={false}
+                    autoCapitalize='none'
+                    onChangeText={(inp) => setEmail(inp)}
+                    left={<TextInput.Icon icon='account' color='green'/>}
+                    mode="outlined"
+                    activeOutlineColor='green'
+                    
+                />
                     <TouchableOpacity disabled={email === ""} onPress={sendEmail} style={styles.appBTN}>
                         <Text style={{ fontSize: 16,  fontFamily: Theme.fonts.text800, color:Theme.colors.light.bg2 }}>Send Link</Text>
                     </TouchableOpacity>
@@ -60,7 +64,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        backgroundColor: Theme.colors.lightGreen,
+        // backgroundColor: Theme.colors.lightGreen,
         justifyContent:"center"
     },
     form: {

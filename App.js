@@ -19,6 +19,7 @@ import { HomeScreen } from './Framework/Screen/HomeScreen';
 import Profile from './Framework/Screen/Profile';
 import { EditProfile } from './Framework/Screen/EditProfile';
 import { Tipngoal } from './Framework/Screen/TipNGoal';
+import Feeds from './Framework/Screen/Feeds';
 
 
 
@@ -74,7 +75,7 @@ export default function App() {
     {/* <Profile/> */}
       
       
-      
+      {/* <Feeds/> */}
     </AppProvider>
   );
 }

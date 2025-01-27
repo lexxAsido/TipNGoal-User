@@ -12,6 +12,7 @@ import * as Animatable from 'react-native-animatable';
 import { FontAwesome } from '@expo/vector-icons';
 
 
+
 export function Tipngoal() {
   const [predictions, setPredictions] = useState([]);
   const [picks, setPicks] = useState([]);
@@ -23,7 +24,7 @@ export function Tipngoal() {
   const yesterday = moment(today).subtract(1, 'day');
   const before = moment(today).subtract(2, 'day');
 
-  // Define updateOutcome outside useEffect
+
   const updateOutcome = async (id, outcome) => {
     try {
       const pickRef = doc(db, 'picks', id);
@@ -108,16 +109,7 @@ export function Tipngoal() {
               <Text style={styles.noOutcome}>Outcome: Pending</Text>
             )}
           </View>
-          <TouchableOpacity
-            style={styles.updateButton}
-            onPress={() => updateGamesOutcome(item.id, "Win")}>
-            <Text style={styles.updateButtonText}>Set Outcome to Win</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.updateButton}
-            onPress={() => updateGamesOutcome(item.id, "Lose")}>
-            <Text style={styles.updateButtonText}>Set Outcome to Lose</Text>
-          </TouchableOpacity>
+
         </>
       ) : (
         <>
@@ -133,16 +125,7 @@ export function Tipngoal() {
               <Text style={styles.noOutcome}>Outcome: Pending</Text>
             )}
           </View>
-          <TouchableOpacity
-            style={styles.updateButton}
-            onPress={() => updateOutcome(item.id, "Win")}>
-            <Text style={styles.updateButtonText}>Set Outcome to Win</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.updateButton}
-            onPress={() => updateOutcome(item.id, "Lose")}>
-            <Text style={styles.updateButtonText}>Set Outcome to Lose</Text>
-          </TouchableOpacity>
+
         </>
       )}
     </View>
@@ -151,29 +134,29 @@ export function Tipngoal() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <Text style={styles.title}>TipNGoal</Text>
+        <Text style={styles.title}>TipNGoal Games</Text>
         <View style={styles.dateFilterContainer}>
-          <TouchableOpacity
-            style={styles.dateButton}
-            onPress={() => filterDataByDate(before)}>
-            <Text style={styles.dateButtonText}>
-              {before.format('D MMM YYYY')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.dateButton}
-            onPress={() => filterDataByDate(yesterday)}>
-            <Text style={styles.dateButtonText}>
-              {yesterday.format('D MMM YYYY')}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.dateButton}
-            onPress={() => filterDataByDate(today)}>
-            <Text style={styles.dateButtonText}>
-              {today.format('D MMM YYYY')}
-            </Text>
-          </TouchableOpacity>
+          <Animatable.View animation="pulse" iterationCount="infinite">
+            <TouchableOpacity
+              style={styles.dateButton}
+              onPress={() => filterDataByDate(before)}>
+              <Text style={styles.dateButtonText}>
+                {before.format('D MMM YYYY')}
+              </Text>
+            </TouchableOpacity>
+          </Animatable.View>
+
+          <Animatable.View animation="pulse" iterationCount="infinite">
+            <TouchableOpacity style={styles.dateButton} onPress={() => filterDataByDate(yesterday)}>
+              <Text style={styles.dateButtonText}>{yesterday.format('D MMM YYYY')}</Text>
+            </TouchableOpacity>
+          </Animatable.View>
+
+          <Animatable.View animation="pulse" iterationCount="infinite">
+            <TouchableOpacity style={styles.dateButton} onPress={() => filterDataByDate(today)}>
+              <Text style={styles.dateButtonText}>{today.format('D MMM YYYY')}</Text>
+            </TouchableOpacity>
+          </Animatable.View>
         </View>
 
         {preloader ? (

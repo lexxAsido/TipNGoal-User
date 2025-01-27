@@ -9,7 +9,7 @@ import { AppContext } from '../Components/globalVariables';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { auth, db } from '../Firebase/Settings';
 import { deleteUser } from 'firebase/auth';
-// import { AppContext } from '../Components/globalVariables';
+
 
 
 export default function Profile({navigation}) {
@@ -17,9 +17,7 @@ export default function Profile({navigation}) {
   const [modalVisibility, setModalVisibility] = useState(false);
   const [deleteModalVisibility, setDeleteModalVisibility] = useState(false);
 
-  const closeModal = () => {
-      setModalVisibility(!modalVisibility);
-  };
+  const closeModal = () => {setModalVisibility(!modalVisibility);};
 
   const closeDeleteModal = () => {
     setDeleteModalVisibility(!deleteModalVisibility);
@@ -30,9 +28,9 @@ export default function Profile({navigation}) {
     try {
       const user = auth.currentUser;
       if (user) {
-        // Delete the user document from Firestore
+        
         await deleteDoc(doc(db, 'users', user.uid));
-        // Delete the user's Firebase Authentication account
+      
         await deleteUser(user);
         setPreloader(false);
         navigation.replace('Intro');
@@ -55,8 +53,7 @@ export default function Profile({navigation}) {
     <View style={{ flex: 1, backgroundColor: Theme.colors.lightGreen, marginTop:10 }}>
       <ScrollView
         refreshControl={<RefreshControl refreshing={false} onRefresh={() => {}} />}
-        showsVerticalScrollIndicator={false}
-      >
+        showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={{ flexDirection: "row", gap: 20, justifyContent: "center", backgroundColor: Theme.colors.light.bg2, padding: 10, borderColor: Theme.colors.black, borderWidth: 3, borderRadius:10 }}>
             <Image
@@ -64,21 +61,13 @@ export default function Profile({navigation}) {
               source={require("../../assets/home2.jpg")}
             />
             <View style={{ marginBottom: 10 }}>
-              <Text style={{ fontSize: 22, fontFamily: Theme.fonts.text700, color: Theme.colors.black }}>
-              {userInfo.firstname} {userInfo?.lastname}
-
-              </Text>
-              <Text style={{ fontSize: 15, fontFamily: Theme.fonts.text400, color: Theme.colors.black }}>
-                {userInfo?.email}
-              </Text>
+              <Text style={{ fontSize: 22, fontFamily: Theme.fonts.text700, color: Theme.colors.black }}>{userInfo.firstname} {userInfo?.lastname}</Text>
+              <Text style={{ fontSize: 15, fontFamily: Theme.fonts.text400, color: Theme.colors.black }}>{userInfo?.email}</Text>
               <TouchableOpacity
                 onPress={() => navigation.navigate("EditProfile")}
-                style={{ borderColor: Theme.colors.black, backgroundColor: Theme.colors.green, borderWidth: 1, padding: 5, paddingHorizontal: 10, borderRadius: 100, width: 130, height: 30, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}
-              >
+                style={{ borderColor: Theme.colors.black, backgroundColor: Theme.colors.green, borderWidth: 1, padding: 5, paddingHorizontal: 10, borderRadius: 100, width: 130, height: 30, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
                 <FontAwesomeIcon icon={faUserCircle} color={Theme.colors.black} />
-                <Text style={{ fontSize: 13, alignItems: 'center', fontWeight: 'bold', marginLeft: 5, color: Theme.colors.black }}>
-                  Edit Profile
-                </Text>
+                <Text style={{ fontSize: 13, alignItems: 'center', fontWeight: 'bold', marginLeft: 5, color: Theme.colors.black }}>Edit Profile</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -149,11 +138,7 @@ export default function Profile({navigation}) {
             </View>
             <View>
               <View style={{ alignItems: 'center', marginBottom: 10 }}>
-                <Text
-                  style={{ fontSize: 16, fontFamily: Theme.fonts.text700, color: Theme.colors.light.bg1, textAlign:"center", paddingHorizontal:8, }}
-                >
-                  Your account will be deleted permanently! Is that okay?
-                </Text>
+                <Text style={{ fontSize: 16, fontFamily: Theme.fonts.text700, color: Theme.colors.light.bg1, textAlign:"center", paddingHorizontal:8, }}>Your account will be deleted permanently! Is that okay?</Text>
               </View>
               <View style={{ marginTop: 20, margin: 15 }}>
                 <Text
@@ -167,9 +152,7 @@ export default function Profile({navigation}) {
                     fontSize:20,
                     fontFamily:Theme.fonts.text700,
                     paddingVertical:5
-                  }}
-                  
-                >
+                  }}>
                   Yes, Delete
                 </Text>
               </View>
@@ -184,19 +167,14 @@ export default function Profile({navigation}) {
 
 
       <View style={styles.signOutContainer}>
-        <AppBotton onPress={closeModal} style={{ borderColor: Theme.colors.green, backgroundColor: "white", borderWidth: 2 }}>
-          Sign Out
-        </AppBotton>
-        <Text style={{ fontSize: 13, color: Theme.colors.black, fontFamily: Theme.fonts.text800, textAlign: "center", marginTop: 10 }}>
-          TipNGoal Version: v1.0.1
-        </Text>
+        <AppBotton onPress={closeModal} style={{ borderColor: Theme.colors.green, backgroundColor: "white", borderWidth: 2 }}>Sign Out</AppBotton>
+        <Text style={{ fontSize: 13, color: Theme.colors.black, fontFamily: Theme.fonts.text800, textAlign: "center", marginTop: 10 }}>TipNGoal Version: v1.0.1</Text>
       </View>
 
       <Modal
         visible={modalVisibility}
         animationType="slide"
-        transparent={true}
-        >
+        transparent={true}>
         <View style={{ flex: 1, backgroundColor: "#0e0f0e59" }}>
           <Pressable style={{ flex: 1 }} onPress={closeModal} />
           <View style={{ height: 200, backgroundColor: Theme.colors.black, borderTopRightRadius: 20, borderTopLeftRadius: 20 }}>
@@ -207,9 +185,7 @@ export default function Profile({navigation}) {
             </View>
             <View>
               <View style={{ alignItems: 'center', marginBottom: 10 }}>
-                <Text style={{ fontSize: 16, fontFamily: Theme.fonts.text400, color: Theme.colors.light.bg2 }}>
-                  Are you sure you want to log out?
-                </Text>
+                <Text style={{ fontSize: 16, fontFamily: Theme.fonts.text400, color: Theme.colors.light.bg2 }}>Are you sure you want to log out?</Text>
               </View>
               <View style={{ marginTop: 20, margin: 15 }}>
                 <AppBotton onPress={() => { closeModal(); logout(); }} style={{ borderColor: Theme.colors.green, backgroundColor: Theme.colors.light.bg2, borderWidth: 2 }} textColor={Theme.colors.red}>
@@ -226,27 +202,7 @@ export default function Profile({navigation}) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    marginTop: 30,
-    
-  },
-  ProfileBtn: {
-    padding: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: "space-between",
-    borderRadius: 10,
-    marginBottom: 10,
-    borderColor: Theme.colors.green,
-    borderBottomWidth: 1,
-  },
-  signOutContainer: {
-    position: "absolute",
-    bottom: 20,
-    left: 0,
-    right: 0,
-    paddingHorizontal: 20,
-  },
+  container: {flex: 1,padding: 20,marginTop: 30,},
+  ProfileBtn: {padding: 10,flexDirection: 'row',alignItems: 'center',justifyContent: "space-between",borderRadius: 10,marginBottom: 10,borderColor: Theme.colors.green,borderBottomWidth: 1},
+  signOutContainer: {position: "absolute",bottom: 20,left: 0,right: 0,paddingHorizontal: 20,},
 });

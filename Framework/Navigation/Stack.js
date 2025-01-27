@@ -13,6 +13,7 @@ import PostGames from '../Screen/PostGames';
 import { Tipngoal } from '../Screen/TipNGoal';
 import PostPicksForm from '../Screen/PostPicksForm';
 import { Web } from '../Screen/Web';
+import Feeds from '../Screen/Feeds';
 
 
 
@@ -31,9 +32,10 @@ export function StackNavigator() {
                 <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown:false, title:""}}/>
                 <Stack.Screen name="Football" component={Football} />
                 <Stack.Screen name="Profile" component={Profile} />
+                <Stack.Screen name="Feeds" component={Feeds} />
                 <Stack.Screen name="EditProfile" component={EditProfile}  />
                 <Stack.Screen name="PostGames" component={PostGames}  />
-                <Stack.Screen name="Web" component={Web}  />
+                <Stack.Screen name="Web" component={Web} options={{headerShown:true,  title: "Blogs" }}/>
                 <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{headerShown:false,  title: "" }} />
                 <Stack.Screen name="TipNGoal" component={Tipngoal} options={{headerShown:false,  title: "" }} />
                 <Stack.Screen name="PostPicksForm" component={PostPicksForm} options={{headerShown:false,  title: "" }} />

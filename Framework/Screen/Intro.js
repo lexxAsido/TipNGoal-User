@@ -1,20 +1,23 @@
 
-import { Button, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import {  ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { AppBotton } from '../Components/AppButton';
 import { Theme } from '../Components/Theme';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import * as Animatable from 'react-native-animatable';
+import { Button } from 'react-native-paper';
 
 export default function Intro ({navigation}) {
   return (
     <View style={{flex:1}}>
         <ImageBackground source={require("../../assets/bg2.jpg")} style={styles.bg}>
         <View style={styles.container}>
-                <Animatable.View animation="pulse" iterationCount="infinite">
-            <AppBotton onPress={()=>{navigation.navigate("SignIn")}}>
+                <Animatable.View animation="pulse" iterationCount="infinite" style={{flexDirection:"row", justifyContent:"space-around"}}>
+            {/* <AppBotton onPress={()=>{navigation.navigate("SignIn")}}>
                 GET STARTED
-                </AppBotton>
+                </AppBotton> */}
+                <Button  icon="login" mode="contained" buttonColor='black' onPress={() => navigation.navigate('SignIn')}>LogIn</Button>
+                <Button  icon="account" mode="contained" buttonColor='green' onPress={() => navigation.navigate('SignUp')}>SignUp</Button>
                     </Animatable.View>
                     
             
@@ -38,6 +41,7 @@ const styles = StyleSheet.create({
       justifyContent: 'flex-end',
       padding: 20,
       paddingBottom: 40,
+      
       
     }
   })

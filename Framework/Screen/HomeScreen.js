@@ -9,9 +9,9 @@ import Profile from './Profile';
 import { AppContext } from '../Components/globalVariables';
 import Football from './Football';
 import { getLiveScores, getUpcomingFixtures } from './apiConfig';
-import PostGames from './PostGames';
 import Carousel from 'react-native-reanimated-carousel';
 import { Tipngoal } from './TipNGoal';
+import Feeds from './Feeds';
 
 
 function Home() {
@@ -48,9 +48,6 @@ function Home() {
 
   return (
     <View style={{ flex: 1, backgroundColor: Theme.colors.lightGreen }}>
-      {/* Notification */}
-      
-
       <ScrollView
         refreshControl={<RefreshControl refreshing={false} onRefresh={() => {}} />}
         showsVerticalScrollIndicator={false}
@@ -116,11 +113,12 @@ export function HomeScreen() {
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
           }  
-          if (route.name === "PostGames") {
-            iconName = focused ? 'accessibility' : 'accessibility';
-          }  
+          
           if (route.name === 'TipNGoal') {
             iconName = focused ? 'football' : 'football-outline';
+          } 
+          if (route.name === 'Feeds') {
+            iconName = focused ? 'bonfire' : 'bonfire';
           } 
           else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
@@ -134,32 +132,15 @@ export function HomeScreen() {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Feeds" component={Feeds} options={{ title: "News & Hot" }} />
       <Tab.Screen name="TipNGoal" component={Tipngoal} options={{ title: "Sure Odds" }} />
-      <Tab.Screen name="PostGames" component={PostGames} options={{ title: "Let's Play" }} />
+      
       <Tab.Screen name="Profile" component={Profile} options={{ title: "Account" }} />
     </Tab.Navigator>
   );
 }
 
 const styles = StyleSheet.create({
-  // notification: {
-  //   position: 'absolute',
-  //   top: 30,
-    
-  //   zIndex: 1,
-  //   padding: 10,
-  //   borderRadius: 5,
-  //   shadowColor: '#000',
-  //   shadowOffset: { width: 0, height: 2 },
-  //   shadowOpacity: 0.3,
-  //   shadowRadius: 3,
-  //   elevation: 4,
-  // },
-  // notificationText: {
-  //   color: Theme.colors.green,
-  //   fontWeight: 'bold',
-  //   fontSize: 14,
-  // },
   header: {
     fontSize: 25,
     fontFamily: Theme.fonts.text900,

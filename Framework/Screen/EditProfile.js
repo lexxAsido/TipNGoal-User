@@ -153,7 +153,7 @@ export function EditProfile({ navigation }) {
             </View>
 
 
-            {/* <=======================> Image Methods <=======================> */}
+         
             <Modal
                 visible={modalVisibility}
                 animationType="slide"
