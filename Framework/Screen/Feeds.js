@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import xml2js from 'react-native-xml2js';
-import { View, Text, FlatList, StyleSheet, Image, ActivityIndicator, RefreshControl, Button, TouchableOpacity, } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, ActivityIndicator, RefreshControl, TouchableOpacity, } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Theme } from '../Components/Theme';
 import { AppContext } from '../Components/globalVariables';
 import * as Animatable from 'react-native-animatable';
+import { Button } from 'react-native-paper';
 
 export default function Feeds({ navigation }) {
   const [news, setNews] = useState([]);
@@ -35,18 +36,18 @@ export default function Feeds({ navigation }) {
   
       parseString(response.data, (err, result) => {
         if (err) {
-          console.error('Error parsing XML:', err);
+          // console.error('Error parsing XML:', err);
         } else {
           const items = result?.rss?.channel?.[0]?.item || [];
           const processedItems = items.map((item) => {
-            console.log('Raw Item:', item); 
+            // console.log('Raw Item:', item); 
           
             const imageUrl =
               extractImage(item.description?.[0]) || 
               item['media:thumbnail']?.[0]?.$?.url || 
               null;
           
-            console.log('Image URL:', imageUrl); 
+            // console.log('Image URL:', imageUrl); 
           
             return {
               title: item.title?.[0] || 'No title', 
@@ -82,7 +83,7 @@ export default function Feeds({ navigation }) {
 
   return (
     <View style={styles.container}>
-    <Text style={{marginVertical:28, fontWeight:"bold", textAlign: 'center',backgroundColor: "#0cd44f" ,paddingVertical: 5,  fontSize: 24,}}>Sport News</Text>
+    <Text style={{marginTop:48, fontWeight:"bold", textAlign: 'center',backgroundColor: Theme.colors.green ,paddingVertical: 5,  fontSize: 24,borderWidth:2, borderColor:"#101110"}}>Sport News</Text>
     <FlatList
       data={news}
       refreshControl={
@@ -97,9 +98,10 @@ export default function Feeds({ navigation }) {
           <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.description}>{item.description}</Text>
 
-         <Animatable.View animation="pulse" iterationCount="infinite" >
+         <Animatable.View  >
           <TouchableOpacity  onPress={() => navigation.navigate('Web', { uri: item.link })}>
-            <Text style={{ textAlign:"center", backgroundColor:"#0cd44f", padding:5, fontSize: 18, fontWeight: 'bold', marginVertical: 8, borderRadius: 8}}>Read More</Text>
+            {/* <Text style={{ textAlign:"center", backgroundColor:"#0cd44f", padding:5, fontSize: 18, fontWeight: 'bold', marginVertical: 8, borderRadius: 8}}>Read More</Text> */}
+            <Button icon="newspaper" mode="outlined"  textColor='green'>Read More</Button>
           </TouchableOpacity>
          </Animatable.View>
         </View>

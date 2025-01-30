@@ -190,33 +190,8 @@ export function SignUp({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    marginTop: StatusBar.currentHeight,
-    backgroundColor: "#ffffff00",
-  },
-  input: {
-    borderColor: Theme.colors.primary,
-    borderWidth: 1,
-    padding: 5,
-    paddingHorizontal: 15,
-    borderRadius: 30,
-    fontSize: 17,
-  },
-
-  label: {
-    marginTop:0,
-    marginBottom: 0,
-  },
-  inputButton: {
-    backgroundColor: "white",
-    borderWidth: 2,
-    // borderEndEndRadius: 30,
-    // borderBottomLeftRadius: 30,
-    borderColor: Theme.colors.green,
-    padding: 10,
-    marginVertical: 2,
-
-  },
+  container: {flex: 1,padding: 20,marginTop: StatusBar.currentHeight,backgroundColor: "#ffffff00",},
+  input: {borderColor: Theme.colors.primary,borderWidth: 1,padding: 5,paddingHorizontal: 15,borderRadius: 30,fontSize: 17,},
+  label: {marginTop:0,marginBottom: 0,},
+  inputButton: {backgroundColor: "white",borderWidth: 2,borderColor: Theme.colors.green,padding: 10,marginVertical: 2,},
 })

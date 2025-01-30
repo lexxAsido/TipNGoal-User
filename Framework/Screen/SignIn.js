@@ -5,14 +5,13 @@ import { Button, TextInput, } from 'react-native-paper';
 import { Formik } from 'formik';
 import * as yup from "yup"
 import { signInWithEmailAndPassword } from 'firebase/auth';
-
 import { auth } from '../Firebase/Settings.js';
 import { errorMessage } from '../Components/formatErrorMessage.js';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowDown, faArrowRight, faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import * as Animatable from 'react-native-animatable';
 import { AppContext } from '../Components/globalVariables.js';
-import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+
 
 
 const validation = yup.object({
@@ -88,7 +87,7 @@ export function SignIn({ navigation }) {
 
 
                 <TouchableOpacity onPress={() => { navigation.navigate("ForgotPassword") }}>
-                  <Text style={{  fontFamily: Theme.fonts.text700, alignSelf: "flex-end", padding: 6 }} >Forgot Password?</Text>
+                  <Text style={{  fontFamily: Theme.fonts.text700, alignSelf: "flex-end", padding: 6, marginBottom: 5}} >Forgot Password?</Text>
                 </TouchableOpacity>
 
 
@@ -115,14 +114,6 @@ export function SignIn({ navigation }) {
       </View>
       <View style={{ marginVertical: 50, justifyContent: "center", flexDirection: "column", gap: 4 }}>
 
-
-        {/* <Animatable.View animation="bounceIn" iterationCount="infinite">
-          <FontAwesomeIcon icon={faArrowDown} size={20} style={{ color: Theme.colors.light.bg2, alignSelf: "center" }} />
-        </Animatable.View> */}
-
-
-
-
         <TouchableOpacity
           onPress={() => { navigation.navigate("SignUp") }}
           style={{ backgroundColor: "white", padding: 10, borderRadius: 20, alignItems: "center", marginHorizontal: 10, justifyContent: "flex-end", borderColor: Theme.colors.green, borderWidth: 2 }}>
@@ -134,43 +125,9 @@ export function SignIn({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 15,
-    // marginTop: StatusBar.currentHeight,
-    backgroundColor: "#ffffff00",
-  },
-  input: {
-    borderColor: Theme.colors.primary,
-    borderWidth: 1,
-    padding: 5,
-    paddingHorizontal: 15,
-    borderRadius: 30,
-    fontSize: 15,
-    marginTop: 10
-
-  },
-  label: {
-    marginBottom: 0
-  },
-  inputButton: {
-    backgroundColor: "white",
-    borderWidth: 2,
-    borderRadius: 20,
-    padding: 15,
-    marginVertical: 2
-  },
-  btn: {
-    backgroundColor: Theme.colors.green,
-    borderWidth: 2,
-    borderRadius: 20,
-    padding: 12,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 6,
-    borderColor: "black"
-    // marginBottom: 30,
-
-  },
+  container: {flex: 1,padding: 15,backgroundColor: "#ffffff00",},
+  input: {borderColor: Theme.colors.primary,borderWidth: 1,padding: 5,paddingHorizontal: 15,borderRadius: 30,fontSize: 15,marginTop: 10},
+  label: {marginBottom: 0},
+  inputButton: {backgroundColor: "white",borderWidth: 2,borderRadius: 20,padding: 15,marginVertical: 2},
+  btn: {backgroundColor: Theme.colors.green,borderWidth: 2,borderRadius: 20,padding: 12,alignItems: "center",flexDirection: "row",justifyContent: "center",gap: 6,borderColor: "black"},
 })

@@ -58,7 +58,7 @@ export default function Profile({navigation}) {
           <View style={{ flexDirection: "row", gap: 20, justifyContent: "center", backgroundColor: Theme.colors.light.bg2, padding: 10, borderColor: Theme.colors.black, borderWidth: 3, borderRadius:10 }}>
             <Image
               style={{ width: 70, height: 70, borderRadius: 50, borderColor:Theme.colors.black, borderWidth:4}}
-              source={require("../../assets/home2.jpg")}
+              source={require("../../assets/avatar.jpg")}
             />
             <View style={{ marginBottom: 10 }}>
               <Text style={{ fontSize: 22, fontFamily: Theme.fonts.text700, color: Theme.colors.black }}>{userInfo.firstname} {userInfo?.lastname}</Text>
