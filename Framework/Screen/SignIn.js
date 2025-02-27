@@ -51,7 +51,7 @@ export function SignIn({ navigation }) {
 
 
                 <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 3, marginBottom: 10 }}>
-                  <Text style={{ alignItems: "center", textAlign: "center", fontSize: 30, fontFamily: Theme.fonts.text900, color: Theme.colors.black }}>Login </Text>
+                  <Text style={{ alignItems: "center", textAlign: "center", fontSize: 30, fontFamily: Theme.fonts.text900, color: Theme.colors.black }}>Welcome </Text>
                   <FontAwesomeIcon icon={faArrowRightToBracket} size={28}  />
                 </View>
 
@@ -96,11 +96,11 @@ export function SignIn({ navigation }) {
                   // onPress={() => { navigation.navigate("HomeScreen") }}
                   onPress={prop.handleSubmit}
                   style={styles.btn}>
-                  <Text style={{ fontSize: 20, fontFamily: Theme.fonts.text900, color: 'black' }}>SignIn</Text>
+                  <Text style={{ fontSize: 20, fontFamily: Theme.fonts.text900, color: 'black' }}>
                   <Animatable.View animation="zoomInRight" iterationCount="infinite">
                     <FontAwesomeIcon icon={faArrowRight}  />
                   </Animatable.View>
-
+                  Log In</Text>
                 </TouchableOpacity>
 
 
@@ -117,7 +117,7 @@ export function SignIn({ navigation }) {
         <TouchableOpacity
           onPress={() => { navigation.navigate("SignUp") }}
           style={{ backgroundColor: "white", padding: 10, borderRadius: 20, alignItems: "center", marginHorizontal: 10, justifyContent: "flex-end", borderColor: Theme.colors.green, borderWidth: 2 }}>
-          <Text style={{ color: Theme.colors.green, fontFamily: Theme.fonts.text900, fontSize: 20 }}>Create Account</Text>
+          <Text style={{  fontFamily: Theme.fonts.text900, fontSize: 20 }}>Create Account</Text>
         </TouchableOpacity>
       </View>
     </View>

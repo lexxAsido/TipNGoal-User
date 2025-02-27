@@ -76,7 +76,7 @@ export function SignUp({ navigation }) {
                     value={prop.values.firstname}
                     onChangeText={prop.handleChange('firstname')}
                     onBlur={prop.handleBlur("firstname")}
-                    // left={<TextInput.Icon icon='account' color='green'/>}
+                    left={<TextInput.Icon icon='account' color='green'/>}
                     mode="outlined"
                     activeOutlineColor='green'
                     
@@ -92,6 +92,7 @@ export function SignUp({ navigation }) {
                     mode="outlined"
                     activeOutlineColor='green'
                     onChangeText={prop.handleChange('lastname')}
+                    left={<TextInput.Icon icon='account' color="green" />}
                     onBlur={prop.handleBlur("lastname")}
                     value={prop.values.lastname}
                   />
@@ -107,15 +108,11 @@ export function SignUp({ navigation }) {
                     activeOutlineColor='green'
                     autoCapitalize='none'
                     onChangeText={prop.handleChange('email')}
+                    left={<TextInput.Icon icon='email' color="green" />}
                     onBlur={prop.handleBlur("email")}
                     value={prop.values.email}
                   />
                   <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>{prop.touched.email && prop.errors.email}</Text>
-
-
-              
-                
-
                
                   <TextInput
                     label={'Create UserName'}
@@ -125,6 +122,7 @@ export function SignUp({ navigation }) {
                     autoCapitalize='none'
                     onChangeText={prop.handleChange('username')}
                     onBlur={prop.handleBlur("username")}
+                    left={<TextInput.Icon icon='account-check' color="green" />}
                     value={prop.values.username}
                   />
                   <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>{prop.touched.username && prop.errors.username}</Text>
@@ -140,6 +138,7 @@ export function SignUp({ navigation }) {
       autoCapitalize="none" 
       autoCorrect={false}
      label={'Create Password'} 
+      left={<TextInput.Icon icon='form-textbox-password'color='green'/>}
       mode="outlined"
       activeOutlineColor='green'
       // left={<TextInput.Icon icon='form-textbox-password'color='green'/>}
@@ -159,14 +158,15 @@ export function SignUp({ navigation }) {
                     autoCapitalize='none'
                     onChangeText={prop.handleChange('phone')}
                     onBlur={prop.handleBlur("phone")}
+                    left={<TextInput.Icon icon='phone' color="green" />}
                     value={prop.values.phone}
                   />
                   <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>{prop.touched.phone && prop.errors.phone}</Text>
                
                 <TouchableOpacity
                     onPress={prop.handleSubmit}
-                    style={{ backgroundColor: Theme.colors.green, padding: 10, borderRadius: 20, alignItems: "center", borderWidth: 2, }}>
-                    <Text style={{  fontFamily: Theme.fonts.text900, fontSize: 20,  }}>SignUp</Text>
+                    style={{ backgroundColor: Theme.colors.green, padding: 10, borderRadius: 20, alignItems: "center", borderWidth: 2, marginTop:18 }}>
+                    <Text style={{  fontFamily: Theme.fonts.text900, fontSize: 20,  }}>Sign Up</Text>
                 </TouchableOpacity>
 
                 <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>

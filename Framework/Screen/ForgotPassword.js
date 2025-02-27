@@ -51,8 +51,8 @@ export function ForgotPassword({ navigation, }) {
                         <Text style={{ fontSize: 16,  fontFamily: Theme.fonts.text800, color:Theme.colors.light.bg2 }}>Send Link</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate("SignIn")} style={{ alignItems: "center", marginTop: 10, backgroundColor:"black", padding:7, borderRadius:20, borderColor:Theme.colors.green, borderWidth:3}}>
-                    <Text style={{ fontSize: 16, color: Theme.colors.light.bg2, fontFamily: Theme.fonts.text600, padding:5 }}>Remember your password?</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("SignIn")} style={{ alignItems: "center", marginTop: 10,  padding:7, borderRadius:20, }}>
+                    <Text style={{ fontSize: 16, fontFamily: Theme.fonts.text600, padding:5 }}>Remember your password?</Text>
                 </TouchableOpacity>
 
             </View>

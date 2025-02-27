@@ -13,7 +13,7 @@ export const Theme = {
         mediumGreen: "#88FCB4",
         lightGreen: "#E9F9EF",
         red: "#EF4444",
-        redLight: "#ffe3e3",
+        redLight: "#ffffff",
         gray: "#808080",
         light: {
             layer: "#f8f8f8",

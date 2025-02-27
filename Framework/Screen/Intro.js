@@ -14,7 +14,7 @@ export default function Intro ({navigation}) {
                 GET STARTED
                 </AppBotton> */}
                 <Button  icon="login" mode="contained" buttonColor='black' onPress={() => navigation.navigate('SignIn')}>LogIn</Button>
-                <Button  icon="account" mode="contained" buttonColor='green' onPress={() => navigation.navigate('SignUp')}>SignUp</Button>
+                <Button  icon="account" mode="contained" buttonColor='green' onPress={() => navigation.navigate('SignUp')}>Sign Up</Button>
                     </Animatable.View>
                     
             
