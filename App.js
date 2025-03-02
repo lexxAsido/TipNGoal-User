@@ -67,7 +67,8 @@ export default function App() {
 
   return (
     <AppProvider style={styles.container}>
-      
+      <StatusBar style="auto" />
+
       <StackNavigator/> 
       <Preloader/>
       {/* <Tipngoal/> */}

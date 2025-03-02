@@ -83,7 +83,7 @@ export default function Feeds({ navigation }) {
 
   return (
     <View style={styles.container}>
-    <Text style={{marginTop:48, fontWeight:"bold", textAlign: 'center',backgroundColor: Theme.colors.green ,paddingVertical: 5,  fontSize: 24,borderWidth:2, borderColor:"#101110"}}>Sport News</Text>
+    <Text style={{marginTop:48, fontWeight:"bold", textAlign: 'center',paddingVertical: 10,  fontSize: 24,}}>Sport News</Text>
     <FlatList
       data={news}
       refreshControl={
@@ -99,9 +99,9 @@ export default function Feeds({ navigation }) {
           <Text style={styles.description}>{item.description}</Text>
 
          <Animatable.View  >
-          <TouchableOpacity  onPress={() => navigation.navigate('Web', { uri: item.link })}>
+          <TouchableOpacity  onPress={() => navigation.navigate('Web', { uri: item.link })} style={{flexDirection:"row", justifyContent:"flex-end",marginVertical: 8,  }}>
             {/* <Text style={{ textAlign:"center", backgroundColor:"#0cd44f", padding:5, fontSize: 18, fontWeight: 'bold', marginVertical: 8, borderRadius: 8}}>Read More</Text> */}
-            <Button icon="newspaper" mode="outlined"  textColor='green'>Read More</Button>
+            <Button icon="newspaper" mode='outlined'  textColor='white' buttonColor='green'>Read More</Button>
           </TouchableOpacity>
          </Animatable.View>
         </View>
@@ -115,7 +115,7 @@ export default function Feeds({ navigation }) {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 10, backgroundColor: Theme.colors.lightGreen },
   loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  card: {marginBottom: 10,padding: 10,backgroundColor: "white",borderRadius: 8,elevation: 3,shadowColor: '#000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.1,shadowRadius: 4,},
+  card: {marginBottom: 20,padding: 18,backgroundColor: "white",borderRadius: 8,elevation: 5,shadowColor: '#000',shadowOffset: { width: 0, height: 5 },shadowOpacity: 0.2,shadowRadius: 4,},
   image: { width: '100%', height: 200, borderRadius: 8 },
   title: { fontSize: 18, fontWeight: 'bold', marginVertical: 5 },
   description: { fontSize: 14, color: '#555' },

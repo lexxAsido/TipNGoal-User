@@ -133,9 +133,9 @@ export function Tipngoal() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Text style={styles.title}>TipNGoal Games</Text>
+    <SafeAreaView style={styles.container}>
+      <View >
+        <Text style={styles.title}>TipNGoal Predictions</Text>
         <View style={styles.dateFilterContainer}>
 
           <Animatable.View animation="pulse" iterationCount="infinite">
@@ -191,7 +191,7 @@ export function Tipngoal() {
 
 const styles = StyleSheet.create({
   container: {flex: 1,backgroundColor: Theme.colors.lightGreen,padding: 10,},
-  title: {fontSize: 24,fontWeight: 'bold',textAlign: 'center',marginVertical: 10,backgroundColor: Theme.colors.green,paddingVertical: 4,borderWidth:2, borderColor:"#101110"},
+  title: {fontSize: 24,fontWeight: 'bold',textAlign: 'center',marginVertical: 10},
   dateFilterContainer: {flexDirection: 'row',justifyContent: 'space-around',marginVertical: 10,},
   dateButton: {padding: 10,borderRadius: 5,borderWidth:1, borderColor:"#4caf50", flexDirection:"row", gap:3, alignItems:"center" },
   dateButtonText: {color: Theme.colors.black,},

@@ -1,4 +1,4 @@
-import { Alert, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useState, } from 'react'
 import { Theme } from '../Components/Theme.js';
 import { Button, TextInput, } from 'react-native-paper';
@@ -48,12 +48,17 @@ export function SignIn({ navigation }) {
           {(prop) => {
             return (
               <View style={{ flex: 1, justifyContent: "center",  }}>
+                <View style={{elevation: 10,shadowColor: Theme.colors.green,shadowOffset: { width: 2, height: 10 },shadowOpacity: 1,shadowRadius: 4,}}>
+                  <Image source={require("../../assets/tiplogo2.png")}
+                    style={{ width: 100,height: 100, backgroundColor:"black", borderRadius:10, alignSelf:"center",marginBottom:10}}
+                  />
 
+                </View>
 
-                <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 3, marginBottom: 10 }}>
+                {/* <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 3, marginBottom: 10 }}>
                   <Text style={{ alignItems: "center", textAlign: "center", fontSize: 30, fontFamily: Theme.fonts.text900, color: Theme.colors.black }}>Welcome </Text>
                   <FontAwesomeIcon icon={faArrowRightToBracket} size={28}  />
-                </View>
+                </View> */}
 
                 <View>
                   <TextInput
@@ -64,13 +69,13 @@ export function SignIn({ navigation }) {
                      onChangeText={prop.handleChange("email")}
                     left={<TextInput.Icon icon='account' color='green'/>}
                     mode="outlined"
-                    activeOutlineColor='green'
+                    activeOutlineColor='black'
                     
                 />
                   <Text style={{ fontSize: 13, color: Theme.colors.red, fontFamily: Theme.fonts.text400 }}>{prop.touched.email && prop.errors.email}</Text>
                 </View>
                 <TextInput
-                    activeOutlineColor='green'
+                    activeOutlineColor='black'
                     autoCapitalize='none'
                     autoComplete='off'
                     autoCorrect={false}
@@ -96,10 +101,10 @@ export function SignIn({ navigation }) {
                   // onPress={() => { navigation.navigate("HomeScreen") }}
                   onPress={prop.handleSubmit}
                   style={styles.btn}>
-                  <Text style={{ fontSize: 20, fontFamily: Theme.fonts.text900, color: 'black' }}>
-                  <Animatable.View animation="zoomInRight" iterationCount="infinite">
-                    <FontAwesomeIcon icon={faArrowRight}  />
-                  </Animatable.View>
+                  <Text style={{ fontSize: 20, fontFamily: Theme.fonts.text400, color: 'black' }}>
+                  {/* <Animatable.View animation="zoomInRight" iterationCount="infinite">
+                    <FontAwesomeIcon icon={faArrowRight} size={16} />
+                  </Animatable.View> */}
                   Log In</Text>
                 </TouchableOpacity>
 
@@ -111,16 +116,14 @@ export function SignIn({ navigation }) {
           }}
 
         </Formik>
-      </View>
-      <View style={{ marginVertical: 50, justifyContent: "center", flexDirection: "column", gap: 4 }}>
-
-        <TouchableOpacity
-          onPress={() => { navigation.navigate("SignUp") }}
-          style={{ backgroundColor: "white", padding: 10, borderRadius: 20, alignItems: "center", marginHorizontal: 10, justifyContent: "flex-end", borderColor: Theme.colors.green, borderWidth: 2 }}>
-          <Text style={{  fontFamily: Theme.fonts.text900, fontSize: 20 }}>Create Account</Text>
-        </TouchableOpacity>
-      </View>
+      <View style={styles.signUpContainer}>
+                <Text style={styles.signUpText}>Don't have an Account?</Text>
+                <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+                  <Text style={styles.signUpLink}>Sign Up</Text>
+                </TouchableOpacity>
+              </View>
     </View>
+      </View>
   )
 }
 
@@ -129,5 +132,21 @@ const styles = StyleSheet.create({
   input: {borderColor: Theme.colors.primary,borderWidth: 1,padding: 5,paddingHorizontal: 15,borderRadius: 30,fontSize: 15,marginTop: 10},
   label: {marginBottom: 0},
   inputButton: {backgroundColor: "white",borderWidth: 2,borderRadius: 20,padding: 15,marginVertical: 2},
-  btn: {backgroundColor: Theme.colors.green,borderWidth: 2,borderRadius: 20,padding: 12,alignItems: "center",flexDirection: "row",justifyContent: "center",gap: 6,borderColor: "black"},
+  btn: {backgroundColor: Theme.colors.green,borderWidth: 2,borderRadius: 10,padding: 10,alignItems: "center",flexDirection: "row",justifyContent: "center",gap: 6,borderColor: "black"},
+  signUpContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 25,
+    alignItems:"center"
+  },
+  signUpText: {
+    fontFamily: Theme.fonts.text900,
+    color: "#333",
+  },
+  signUpLink: {
+    color: Theme.colors.green,
+    fontFamily: Theme.fonts.text900,
+    marginLeft: 5,
+    
+  },
 })

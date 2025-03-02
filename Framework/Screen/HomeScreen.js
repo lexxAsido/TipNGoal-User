@@ -108,7 +108,7 @@ export function HomeScreen() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color }) => {
           let iconName;
-          let size = focused ? 35 : 23;
+          let size = focused ? 28 : 23;
 
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';

@@ -9,6 +9,7 @@ import { AppContext } from '../Components/globalVariables';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { auth, db } from '../Firebase/Settings';
 import { deleteUser } from 'firebase/auth';
+import { getInitials } from '../../utils/getInitials';
 
 
 
@@ -55,11 +56,13 @@ export default function Profile({navigation}) {
         refreshControl={<RefreshControl refreshing={false} onRefresh={() => {}} />}
         showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <View style={{ flexDirection: "row", gap: 20, justifyContent: "center", backgroundColor: Theme.colors.light.bg2, padding: 10, borderColor: Theme.colors.black, borderWidth: 3, borderRadius:10 }}>
-            <Image
-              style={{ width: 70, height: 70, borderRadius: 50, borderColor:Theme.colors.black, borderWidth:4}}
-              source={require("../../assets/avatar.jpg")}
-            />
+          <View style={styles.userInfo}>
+            <View style={styles.avatar}>
+              <Text style={styles.avatarText}>
+                {getInitials(`${userInfo?.firstname} ${userInfo?.lastname}`)}
+
+              </Text>
+            </View>
             <View style={{ marginBottom: 10 }}>
               <Text style={{ fontSize: 22, fontFamily: Theme.fonts.text700, color: Theme.colors.black }}>{userInfo.firstname} {userInfo?.lastname}</Text>
               <Text style={{ fontSize: 15, fontFamily: Theme.fonts.text400, color: Theme.colors.black }}>{userInfo?.email}</Text>
@@ -73,11 +76,11 @@ export default function Profile({navigation}) {
           </View>
         </View>
 
-            <View style={{marginTop:60}}>
+            <View style={styles.card}>
 
                           <TouchableOpacity onPress={() => navigation.navigate("Web", { uri: "https://tip-n-goal-web.vercel.app/about" })} style={styles.ProfileBtn}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <AntDesign name="user" size={24} style={{ paddingRight: 10, color: Theme.colors.light.text2 }} />
+                                <AntDesign name="user" size={24} style={{ paddingRight: 10, color: Theme.colors.green }} />
                                 <Text style={{ fontFamily: Theme.fonts.text500, fontSize: 16 }}>About Us</Text>
                             </View>
                             <FontAwesomeIcon icon={faAngleRight} size={20} color={Theme.colors.light.text2} />
@@ -85,7 +88,7 @@ export default function Profile({navigation}) {
 
                           <TouchableOpacity onPress={() => navigation.navigate("Web", { uri: "https://tip-n-goal-web.vercel.app/contact" })} style={styles.ProfileBtn}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <AntDesign name="message1" size={24} style={{ paddingRight: 10, color: Theme.colors.light.text2 }} />
+                                <AntDesign name="message1" size={24} style={{ paddingRight: 10, color: Theme.colors.green }} />
                                 <Text style={{ fontFamily: Theme.fonts.text500, fontSize: 16 }}>Help & Feedback</Text>
                             </View>
                             <FontAwesomeIcon icon={faAngleRight} size={20} color={Theme.colors.light.text2} />
@@ -94,7 +97,7 @@ export default function Profile({navigation}) {
 
                         <TouchableOpacity onPress={() => navigation.navigate("Web", { uri: "https://tip-n-goal-web.vercel.app/terms" })}  style={styles.ProfileBtn}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <MaterialCommunityIcons name='format-list-text' size={24} style={{ paddingRight: 10, color: Theme.colors.light.text2 }} />
+                                <MaterialCommunityIcons name='format-list-text' size={24} style={{ paddingRight: 10, color: Theme.colors.green }} />
                                 <Text style={{ fontFamily: Theme.fonts.text500, fontSize: 16 }}>Terms of Use</Text>
                             </View>
                             <FontAwesomeIcon icon={faAngleRight} size={20} color={Theme.colors.light.text2} />
@@ -102,12 +105,12 @@ export default function Profile({navigation}) {
 
                         <TouchableOpacity onPress={() => navigation.navigate("Web", { uri: "https://tip-n-goal-web.vercel.app/privacy" })} style={styles.ProfileBtn}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <AntDesign name="Safety" size={24} style={{ paddingRight: 10, color: Theme.colors.light.text2 }} />
+                                <AntDesign name="Safety" size={24} style={{ paddingRight: 10, color: Theme.colors.green }} />
                                 <Text style={{ fontFamily: Theme.fonts.text500, fontSize: 16 }}>Privacy Policy</Text>
                             </View>
                             <FontAwesomeIcon icon={faAngleRight} size={20} color={Theme.colors.light.text2} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.ProfileBtn}
+                        <TouchableOpacity style={{padding: 10,flexDirection: 'row',alignItems: 'center',justifyContent: "space-between",borderRadius: 10,marginBottom: 10,}}
                         onPress={() => setDeleteModalVisibility(true)}>
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                 <Ionicons name='trash-outline' size={24} style={{ paddingRight: 10, color: Theme.colors.red, }} />
@@ -203,6 +206,25 @@ export default function Profile({navigation}) {
 
 const styles = StyleSheet.create({
   container: {flex: 1,padding: 20,marginTop: 30,},
-  ProfileBtn: {padding: 10,flexDirection: 'row',alignItems: 'center',justifyContent: "space-between",borderRadius: 10,marginBottom: 10,borderColor: Theme.colors.green,borderBottomWidth: 1},
+  ProfileBtn: {padding: 10,flexDirection: 'row',alignItems: 'center',justifyContent: "space-between",borderRadius: 10,marginBottom: 10, borderBottomWidth: 1},
   signOutContainer: {position: "absolute",bottom: 20,left: 0,right: 0,paddingHorizontal: 20,},
+  avatar: {
+    backgroundColor: Theme.colors.black,
+    width: 80,
+    height: 80,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    // marginRight: "auto",
+  },
+  avatarText: {
+    color: "white",
+    fontSize: 28,
+    fontFamily: Theme.fonts.text900,
+  },
+  userInfo: {
+    elevation: 3,shadowColor: '#000000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.1,shadowRadius: 4,flexDirection: "row", gap: 20, justifyContent: "center", backgroundColor: Theme.colors.light.bg2, paddingHorizontal: 10, borderColor: Theme.colors.black, borderRadius:10, alignItems:"center",paddingVertical:18
+  },
+  card: {backgroundColor: '#ffffff',borderRadius: 10,padding: 15,marginBottom: 10,elevation: 3,shadowColor: '#000000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.1,shadowRadius: 4,marginTop:60, marginHorizontal:14},
+  
 });
