@@ -14,31 +14,25 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.tipngoal.app",
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"
-      }
+      "bundleIdentifier": "com.tipngoal.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/app_icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.tipngoal.app",
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~3347511713"
-      }
+      "package": "com.tipngoal.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font"
-    ],
     "extra": {
       "eas": {
         "projectId": "734d2d66-6e33-455f-82a3-47c546b90138"
       }
-    }
+    },
+    "plugins": [
+      "react-native-google-mobile-ads"
+    ]
   }
 }

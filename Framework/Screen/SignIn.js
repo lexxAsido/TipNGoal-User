@@ -101,11 +101,11 @@ export function SignIn({ navigation }) {
                   // onPress={() => { navigation.navigate("HomeScreen") }}
                   onPress={prop.handleSubmit}
                   style={styles.btn}>
-                  <Text style={{ fontSize: 20, fontFamily: Theme.fonts.text400, color: 'black' }}>
-                  {/* <Animatable.View animation="zoomInRight" iterationCount="infinite">
+                  <Text style={{ fontSize: 20, fontFamily: Theme.fonts.text900,  }}>
+                  Login</Text>
+                  {/* <Animatable.View animation="zoomInRight" iterationCount="infinite"> */}
                     <FontAwesomeIcon icon={faArrowRight} size={16} />
-                  </Animatable.View> */}
-                  Log In</Text>
+                  {/* </Animatable.View> */}
                 </TouchableOpacity>
 
 
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   input: {borderColor: Theme.colors.primary,borderWidth: 1,padding: 5,paddingHorizontal: 15,borderRadius: 30,fontSize: 15,marginTop: 10},
   label: {marginBottom: 0},
   inputButton: {backgroundColor: "white",borderWidth: 2,borderRadius: 20,padding: 15,marginVertical: 2},
-  btn: {backgroundColor: Theme.colors.green,borderWidth: 2,borderRadius: 10,padding: 10,alignItems: "center",flexDirection: "row",justifyContent: "center",gap: 6,borderColor: "black"},
+  btn: {backgroundColor: Theme.colors.green,borderRadius: 10,padding: 10,alignItems: "center",flexDirection: "row",justifyContent: "center",gap: 6,},
   signUpContainer: {
     flexDirection: "row",
     justifyContent: "center",

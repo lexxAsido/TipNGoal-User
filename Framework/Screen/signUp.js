@@ -167,7 +167,7 @@ export function SignUp({ navigation }) {
 
                 <TouchableOpacity
                   onPress={prop.handleSubmit}
-                  style={{ backgroundColor: Theme.colors.green, padding: 10, borderRadius: 20, alignItems: "center", borderWidth: 2, marginTop: 18 }}>
+                  style={{ backgroundColor: Theme.colors.green, padding: 10, borderRadius: 20, alignItems: "center", marginTop: 18 }}>
                   <Text style={{ fontFamily: Theme.fonts.text900, fontSize: 20, }}>Sign Up</Text>
                 </TouchableOpacity>
 

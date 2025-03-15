@@ -10,9 +10,6 @@ export default function Intro ({navigation}) {
         <ImageBackground source={require("../../assets/bg2.jpg")} style={styles.bg}>
         <View style={styles.container}>
                 <Animatable.View animation="pulse" iterationCount="infinite" style={{flexDirection:"row", justifyContent:"space-around"}}>
-            {/* <AppBotton onPress={()=>{navigation.navigate("SignIn")}}>
-                GET STARTED
-                </AppBotton> */}
                 <Button  icon="login" mode="contained" buttonColor='black' onPress={() => navigation.navigate('SignIn')}>LogIn</Button>
                 <Button  icon="account" mode="contained" buttonColor='green' onPress={() => navigation.navigate('SignUp')}>Sign Up</Button>
                     </Animatable.View>
