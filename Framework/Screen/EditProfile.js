@@ -12,6 +12,7 @@ import { AppContext } from "../Components/globalVariables";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../Firebase/Settings";
 import { errorMessage } from "../Components/formatErrorMessage";
+import { BannerAd, BannerAdSize, TestIds } from "react-native-google-mobile-ads";
 
 
 
@@ -26,7 +27,8 @@ export function EditProfile({ navigation }) {
     const [address, setaddress] = useState(userInfo.address);
     const [phone, setphone] = useState(userInfo.phone);
     const [username, setusername] = useState(userInfo.username);
-    const width = Dimensions.get("screen").width
+    const { width = 360 } = Dimensions.get("window"); // safer for Hermes
+
 
 
 
@@ -82,15 +84,15 @@ export function EditProfile({ navigation }) {
             <View style={styles.body}>
                 {/* <ScrollView > */}
                 <ImageBackground source={require("../../assets/home2.jpg" )} style={{height:180}}>
-                    {/* <View style={{ position: "relative" }}> */}
-                        {/* <Pressable onPress={imageModal}>
+                    <View style={{ position: "relative" }}>
+                        <Pressable onPress={imageModal}>
                             <Image source={require("../../assets/user.png")}
                                 style={styles.ProfileImage} />
-                        </Pressable> */}
-                        {/* <TouchableOpacity onPress={closeModal} style={styles.BtnIcon}>
+                        </Pressable>
+                        <TouchableOpacity onPress={closeModal} style={[styles.BtnIcon, { right: width / 2 - 60 }]}>
                             <FontAwesomeIcon icon={faCameraRetro} color="#16171D" size={15} />
-                        </TouchableOpacity> */}
-                    {/* </View> */}
+                        </TouchableOpacity>
+                     </View>
                 </ImageBackground>
 
                 <ScrollView>
@@ -148,6 +150,15 @@ export function EditProfile({ navigation }) {
                         <View style={{ marginTop: 10 }}>
                             <AppBotton onPress={updateUser}>Update Profile</AppBotton>
                         </View>
+                        {/* ✅ Banner Ad */}
+                               {/* ✅ Banner Ad */}
+                                           <View style={{ width: "100%" , alignSelf: "center", backgroundColor: "transparent", marginVertical: 3 }}>
+                                                               <BannerAd
+                                                                 unitId={TestIds.BANNER} 
+                                                                 size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                                                                 onAdFailedToLoad={(error) => console.log("Ad failed to load:", error)}
+                                                               />
+                                                             </View>
                     </View>
                 </ScrollView>
             </View>
@@ -269,11 +280,64 @@ export const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Theme.colors.lightGreen,
-
     },
     body: {
         flex: 1,
-        marginHorizontal: 10,
+        marginHorizontal: 12,
+    },
+    ProfileImage: {
+        width: 120,
+        height: 120,
+        borderRadius: 60,
+        borderColor: Theme.colors.primary,
+        borderWidth: 2,
+        alignSelf: "center",
+        marginTop: 10,
+    },
+    BtnIcon: {
+        backgroundColor: Theme.colors.primary,
+        padding: 8,
+        borderRadius: 50,
+        position: "absolute",
+        bottom: 0,
+        
+        zIndex: 10,
+        elevation: 4,
+    },
+    formContainer: {
+        padding: 15,
+        marginTop: 20,
+        backgroundColor: "#ffffff",
+        borderRadius: 12,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    signupText: {
+        color: "#434355",
+        marginBottom: 6,
+        fontSize: 16,
+        fontWeight: "600",
+    },
+    inputStyle: {
+        borderColor: "#ccc",
+        borderWidth: 1,
+        paddingVertical: 12,
+        paddingHorizontal: 15,
+        marginBottom: 15,
+        borderRadius: 10,
+        fontSize: 16,
+        backgroundColor: "#f9f9f9",
+    },
+    getStarted: {
+        backgroundColor: Theme.colors.primary,
+        paddingVertical: 14,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 10,
+        marginTop: 20,
     },
     header: {
         position: "relative",
@@ -283,57 +347,6 @@ export const styles = StyleSheet.create({
         backgroundColor: Theme.colors.green,
         padding: 10,
         borderRadius: 8,
-    
-    },
-    BtnIcon: {
-        backgroundColor: Theme.colors.primary,
-        padding: 5,
-        borderRadius: 60,
-        position: "absolute",
-        bottom: 0,
-        right: 10,
-        zIndex: 11,
-    },
-    ProfileImage: {
-        width: 100,
-        height: 100,
-        marginRight: 10,
-        borderRadius: 80,
-        borderColor: Theme.colors.primary + 20,
-        borderWidth: 1
-    },
-    text1: {
-        color: "#787A8D",
-        marginTop: 10,
-        fontSize: 23,
-        fontWeight: "bold"
-    },
-    formContainer: {
-        padding: 10,
-        marginTop: 10
-    },
-    inputStyle: {
-        borderColor: "gray",
-        borderWidth: 1,
-        padding: 8,
-        marginBottom: 10,
-        borderRadius: 10,
-        width: "100%",
-        fontSize: 18
-    },
-    getStarted: {
-        backgroundColor: Theme.colors.primary,
-        padding: 13,
-        marginTop: 15,
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 8,
-
-    },
-    signupText: {
-        color: "#434355",
-        marginBottom: 5,
-        fontSize: 15
     },
     calenderIcon: {
         backgroundColor: Theme.colors.primary,
@@ -341,7 +354,7 @@ export const styles = StyleSheet.create({
         padding: 8,
         top: 4,
         right: 4,
-        borderRadius: 90
+        borderRadius: 90,
     },
     login: {
         flexDirection: "row",
@@ -352,11 +365,9 @@ export const styles = StyleSheet.create({
         alignItems: "center",
     },
     errorMessage: {
-        color: "red"
+        color: "red",
     },
     textBelow: {
-        // flexDirection:"row",
-        // justifyContent:"space-between"
-        alignItems: "center"
-    }
-})
+        alignItems: "center",
+    },
+});

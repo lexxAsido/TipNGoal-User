@@ -37,7 +37,7 @@ export const AppContext = createContext();
 
 export function AppProvider({ children }) {
   const [userUID, setUserUID] = useState("");
-  const [userInfo, setUserInfo] = useState({image: null, firstname: "John", lastname: "Wick", email: "john@gmail.com" });
+  const [userInfo, setUserInfo] = useState({image: null, firstname: "John", lastname: "Wick", email: "john@gmail.com", role: "user" });
   const [preloader, setPreloader] = useState(false);
 
   useEffect(() => {

@@ -1,7 +1,6 @@
 
 import {  ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { AppBotton } from '../Components/AppButton';
-import * as Animatable from 'react-native-animatable';
 import { Button } from 'react-native-paper';
 
 export default function Intro ({navigation}) {
@@ -9,10 +8,10 @@ export default function Intro ({navigation}) {
     <View style={{flex:1}}>
         <ImageBackground source={require("../../assets/bg2.jpg")} style={styles.bg}>
         <View style={styles.container}>
-                <Animatable.View animation="pulse" iterationCount="infinite" style={{flexDirection:"row", justifyContent:"space-around"}}>
+                <View  style={{flexDirection:"row", justifyContent:"space-around"}}>
                 <Button  icon="login" mode="contained" buttonColor='black' onPress={() => navigation.navigate('SignIn')}>LogIn</Button>
                 <Button  icon="account" mode="contained" buttonColor='green' onPress={() => navigation.navigate('SignUp')}>Sign Up</Button>
-                    </Animatable.View>
+                    </View>
                     
             
         </View>

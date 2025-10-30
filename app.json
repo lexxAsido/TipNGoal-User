@@ -3,31 +3,26 @@
     "name": "TipNGoal",
     "slug": "TipNGoal",
     "version": "1.0.1",
+    "owner": "honcholex14",
     "orientation": "portrait",
     "icon": "./assets/app_icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash_screen.png",
+      "image": "./assets/tiplogo3.png",
       "resizeMode": "cover",
       "backgroundColor": "#000000"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.tipngoal.app",
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~1458002511"   
-      }
+      "bundleIdentifier": "com.tipngoal.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/app_icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#000000"
       },
-      "package": "com.tipngoal.app",
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~3347511713"
-      }
+      "package": "com.tipngoal.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -38,7 +33,14 @@
       }
     },
     "plugins": [
-      "react-native-google-mobile-ads"
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-3940256099942544~3347511713",
+          "iosAppId": "ca-app-pub-3940256099942544~1458002511"
+        }
+      ],
+      "expo-font"
     ]
   }
 }

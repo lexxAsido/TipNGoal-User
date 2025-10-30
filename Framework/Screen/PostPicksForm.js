@@ -1,15 +1,34 @@
 import React, { useContext, useState } from 'react';
-import {View,Text,TextInput,TouchableOpacity,StyleSheet,Alert,} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from 'react-native';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../Firebase/Settings';
 import { AppContext } from '../Components/globalVariables';
 import { Theme } from '../Components/Theme';
+import { ThemeContext } from '../Context/ThemeContext'; // ✅ Add this
 
 export default function PostPicksForm({ navigation }) {
   const [leagueName, setLeagueName] = useState('');
   const [match, setMatch] = useState('');
   const [prediction, setPrediction] = useState('');
   const { setPreloader, userUID } = useContext(AppContext);
+  const { theme } = useContext(ThemeContext); // ✅ Access current theme
+
+  // ✅ Dark mode color scheme
+  const isDark = theme === 'dark';
+  const colors = {
+    background: isDark ? '#121212' : '#ffffff',
+    text: isDark ? '#f5f5f5' : '#333',
+    subText: isDark ? '#aaaaaa' : '#888',
+    inputBg: isDark ? '#1E1E1E' : '#fff',
+    border: isDark ? '#333' : '#ccc',
+  };
 
   const handlePicks = async () => {
     if (!leagueName || !match || !prediction) {
@@ -31,41 +50,49 @@ export default function PostPicksForm({ navigation }) {
       setLeagueName('');
       setMatch('');
       setPrediction('');
-      // navigation.navigate('TipNGoal');
     } catch (error) {
-      console.error("Error posting pick: ", error.message);
+      console.error('Error posting pick: ', error.message);
       setPreloader(false);
       Alert.alert('Error', 'Failed to post games.');
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Post Your Picks</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.title, { color: colors.text }]}>Post Your Picks</Text>
 
       {/* League Name */}
       <TextInput
-        style={styles.input}
+        style={[
+          styles.input,
+          { backgroundColor: colors.inputBg, borderColor: colors.border, color: colors.text },
+        ]}
         placeholder="League Name"
-        placeholderTextColor="#888"
+        placeholderTextColor={colors.subText}
         value={leagueName}
         onChangeText={setLeagueName}
       />
 
       {/* Match */}
       <TextInput
-        style={styles.input}
+        style={[
+          styles.input,
+          { backgroundColor: colors.inputBg, borderColor: colors.border, color: colors.text },
+        ]}
         placeholder="Match"
-        placeholderTextColor="#888"
+        placeholderTextColor={colors.subText}
         value={match}
         onChangeText={setMatch}
       />
 
       {/* Prediction */}
       <TextInput
-        style={styles.input}
+        style={[
+          styles.input,
+          { backgroundColor: colors.inputBg, borderColor: colors.border, color: colors.text },
+        ]}
         placeholder="Prediction"
-        placeholderTextColor="#888"
+        placeholderTextColor={colors.subText}
         value={prediction}
         onChangeText={setPrediction}
       />
@@ -78,29 +105,28 @@ export default function PostPicksForm({ navigation }) {
   );
 }
 
+// ✅ Styles remain consistent
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: Theme.colors.lightGreen,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Montserrat_600SemiBold',
     marginBottom: 20,
-    color: '#333',
+    borderBottomColor: Theme.colors.green,
+    borderBottomWidth: 4,
   },
   input: {
     width: '100%',
     height: 50,
     borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 8,
     paddingHorizontal: 10,
     marginBottom: 15,
-    backgroundColor: '#fff',
     fontSize: 16,
   },
   button: {

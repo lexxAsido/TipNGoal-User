@@ -1,88 +1,106 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
-import { AppContext } from '../Components/globalVariables';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../Components/Theme';
+import React, { useState, useEffect, useContext, useMemo, useCallback } from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  Alert,
+  Image,
+  ScrollView,
+} from 'react-native';
 import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../Firebase/Settings';
+import { Theme } from '../Components/Theme';
 import moment from 'moment';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import * as Animatable from 'react-native-animatable';
-import { FontAwesome } from '@expo/vector-icons';
-import { Button } from 'react-native-paper';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from 'react-native-google-mobile-ads';
+import { useIsFocused } from '@react-navigation/native';
+import { AppContext } from '../Components/globalVariables';
+import { ThemeContext } from '../Context/ThemeContext';
 
-
+// ✅ AdMob Banner ID
+const BANNER_ID = __DEV__
+  ? TestIds.BANNER
+  : 'ca-app-pub-xxxxxxxxxxxxxxxx/yyyyyyyyyy'; // Replace with your real banner ID
 
 export function Tipngoal() {
   const [predictions, setPredictions] = useState([]);
   const [picks, setPicks] = useState([]);
   const [filteredPredictions, setFilteredPredictions] = useState([]);
   const [filteredPicks, setFilteredPicks] = useState([]);
-  const { preloader, setPreloader } = useContext(AppContext);
+
+  const { preloader, setPreloader, userInfo } = useContext(AppContext);
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === 'dark';
+  const isFocused = useIsFocused();
 
   const today = moment().startOf('day');
   const yesterday = moment(today).subtract(1, 'day');
-  const before = moment(today).subtract(2, 'day');
 
+  const bookies = useMemo(
+    () => [
+      { name: 'SportyBet', image: require('../../assets/sporty.jpg') },
+      { name: 'BetKing', image: require('../../assets/betKing.png') },
+      { name: 'Betano', image: require('../../assets/betano.png') },
+      { name: 'Bet9ja', image: require('../../assets/bet9ja.png') },
+      { name: 'Stake', image: require('../../assets/stake.jpg') },
+      { name: 'Betway', image: require('../../assets/betway.png') },
+    ],
+    []
+  );
 
-  const updateOutcome = async (id, outcome) => {
-    try {
-      const pickRef = doc(db, 'picks', id);
-      await updateDoc(pickRef, { Outcome: outcome });
-      Alert.alert('Success', `Outcome set to ${outcome}`);
-    } catch (error) {
-      console.error('Error updating outcome: ', error);
-      Alert.alert('Error', 'Failed to update outcome.');
-    }
-  };
-
-  const updateGamesOutcome = async (id, outcome) => {
-    try {
-      const gameRef = doc(db, 'games', id);
-      await updateDoc(gameRef, { Outcome: outcome });
-      Alert.alert('Success', `Game outcome set to ${outcome}`);
-    } catch (error) {
-      console.error('Error updating game outcome:', error);
-      Alert.alert('Error', 'Failed to update game outcome.');
-    }
-  };
-  useEffect(() => {
+  // 🔁 Fetch data from Firestore (runs on mount & when screen refocuses)
+  const fetchData = useCallback(() => {
     setPreloader(true);
+    const unsubGames = onSnapshot(collection(db, 'games'), (snap) => {
+      setPredictions(
+        snap.docs.map((d) => ({
+          id: d.id,
+          ...d.data(),
+          createdAt: d.data().createdAt?.toDate(),
+        }))
+      );
+    });
 
-    const unsubscribePredictions = onSnapshot(
-      collection(db, 'games'),
-      (snapshot) => {
-        const games = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate(),
-        }));
-        setPredictions(games);
-      }
-    );
-
-    const unsubscribePicks = onSnapshot(
-      collection(db, 'picks'),
-      (snapshot) => {
-        const picksData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-          created: doc.data().created?.toDate(),
-        }));
-        setPicks(picksData);
-      }
-    );
+    const unsubPicks = onSnapshot(collection(db, 'picks'), (snap) => {
+      setPicks(
+        snap.docs.map((d) => ({
+          id: d.id,
+          ...d.data(),
+          created: d.data().created?.toDate(),
+        }))
+      );
+    });
 
     setPreloader(false);
-
     return () => {
-      unsubscribePredictions();
-      unsubscribePicks();
+      unsubGames();
+      unsubPicks();
     };
   }, [setPreloader]);
 
-  const filterDataByDate = (date) => {
+  // ⏳ Run fetch when mounted & when focused again
+  useEffect(() => {
+    if (isFocused) {
+      const unsub = fetchData();
+      return () => unsub && unsub();
+    }
+  }, [isFocused, fetchData]);
+
+  // 🧭 Track selected date state
+const [selectedDate, setSelectedDate] = useState(today);
+
+// 🔁 Filter by selected date
+const filterDataByDate = useCallback(
+  (date) => {
+    setSelectedDate(date);
     const filteredPreds = predictions.filter((item) =>
       moment(item.createdAt).isSame(date, 'day')
     );
@@ -91,119 +109,294 @@ export function Tipngoal() {
     );
     setFilteredPredictions(filteredPreds);
     setFilteredPicks(filteredPickItems);
+  },
+  [predictions, picks]
+);
+
+// ⚡ Automatically show today’s data when loaded
+useEffect(() => {
+  filterDataByDate(selectedDate);
+}, [predictions, picks, selectedDate, filterDataByDate]);
+
+  // ✅ Update match outcome
+  const updateOutcome = async (id, outcome, collectionName) => {
+    if (userInfo?.role !== 'admin') {
+      Alert.alert('Access Denied', 'Only admins can update outcomes.');
+      return;
+    }
+    try {
+      const ref = doc(db, collectionName, id);
+      await updateDoc(ref, { Outcome: outcome });
+      Alert.alert('✅ Success', `Outcome set to ${outcome}`);
+    } catch (e) {
+      console.error(e);
+      Alert.alert('Error', 'Failed to update outcome.');
+    }
   };
 
-  const renderItem = ({ item, type }) => (
-    <View style={styles.card}>
-      {type === 'predictions' ? (
-        <>
-          <Text style={styles.punterName}>Punter: {item.punterName}</Text>
-          <Text style={styles.match}>Bet Codes: {item.betCodes}</Text>
-          <Text style={styles.prediction}>Odds: {item.odds}</Text>
-          <Text style={styles.date}>Bookies: {item.betCompany}</Text>
-          <View style={styles.iconContainer}>
-            {item.Outcome === 'Win' ? (
-              <FontAwesome name="check-circle" size={24} color="green" />
-            ) : item.Outcome === 'Lose' ? (
-              <FontAwesome name="times-circle" size={24} color="red" />
-            ) : (
-              <Text style={styles.noOutcome}>Outcome: Pending</Text>
-            )}
-          </View>
+  // 🎨 Dynamic theme
+  const stylesDynamic = useMemo(
+    () => ({
+      bg: { backgroundColor: isDark ? '#1E1E1E' : '#FFFFFF' },
+      card: { backgroundColor: isDark ? '#2A2A2A' : '#F6F6F6' },
+      text: { color: isDark ? '#EDEDED' : '#171717' },
+      subText: { color: isDark ? '#AAAAAA' : '#555555' },
+      border: { borderColor: isDark ? '#444' : '#4caf50' },
+    }),
+    [isDark]
+  );
 
-        </>
-      ) : (
-        <>
-          <Text style={styles.leagueName}>League: {item.leagueName}</Text>
-          <Text style={styles.match}>Match: {item.match}</Text>
-          <Text style={styles.prediction}>Prediction: {item.prediction}</Text>
-          <View style={styles.iconContainer}>
-            {item.Outcome === 'Win' ? (
-              <FontAwesome name="check-circle" size={24} color="green" />
-            ) : item.Outcome === 'Lose' ? (
-              <FontAwesome name="times-circle" size={24} color="red" />
-            ) : (
-              <Text style={styles.noOutcome}>Outcome: Pending</Text>
-            )}
-          </View>
+  const renderCard = ({ item, type }) => {
+    const bookie = bookies.find(
+      (b) => b.name.toLowerCase() === item.betCompany?.toLowerCase()
+    );
 
-        </>
+    return (
+      <View style={[styles.card, stylesDynamic.card]}>
+        {type === 'predictions' ? (
+          <>
+            <View style={styles.rowBetween}>
+              <View style={styles.rowCenter}>
+                <FontAwesome name="user" size={20} color="#4caf50" />
+                <Text style={[styles.punterName, stylesDynamic.text]}>
+                  {item.punterName}
+                </Text>
+              </View>
+              {bookie ? (
+                <Image
+                  source={bookie.image}
+                  style={styles.bookieLogo}
+                  resizeMode="contain"
+                />
+              ) : (
+                <Text style={[styles.sub, stylesDynamic.subText]}>
+                  {item.betCompany}
+                </Text>
+              )}
+            </View>
+
+            <View style={styles.rowCenter}>
+              <MaterialCommunityIcons
+                name="ticket-confirmation-outline"
+                size={20}
+                color={isDark ? '#fff' : '#000'}
+              />
+              <Text style={[styles.match, stylesDynamic.text]}>
+                {item.betCodes}
+              </Text>
+            </View>
+
+            <View style={styles.rowBetween}>
+              <Text style={[styles.prediction, stylesDynamic.subText]}>
+                {item.odds} odds
+              </Text>
+              <View style={styles.rowCenter}>
+                <Text style={[styles.outcomeLabel, stylesDynamic.subText]}>
+                  Outcome:{' '}
+                </Text>
+                {item.Outcome === 'Win' ? (
+                  <FontAwesome name="check-circle" size={22} color="green" />
+                ) : item.Outcome === 'Lose' ? (
+                  <FontAwesome name="times-circle" size={22} color="red" />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="dots-horizontal"
+                    size={26}
+                    color="#F8BD00"
+                  />
+                )}
+              </View>
+            </View>
+
+            {userInfo?.role === 'admin' && (
+              <>
+                <TouchableOpacity
+                  style={styles.updateButton}
+                  onPress={() => updateOutcome(item.id, 'Win', 'games')}
+                >
+                  <Text style={styles.updateButtonText}>Set Outcome to Win</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.updateButton}
+                  onPress={() => updateOutcome(item.id, 'Lose', 'games')}
+                >
+                  <Text style={styles.updateButtonText}>Set Outcome to Lose</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            <View style={styles.rowCenter}>
+              <Ionicons name="football" size={20} color="#4caf50" />
+              <Text style={[styles.leagueName, stylesDynamic.text]}>
+                {item.leagueName}
+              </Text>
+            </View>
+            <View style={styles.rowCenter}>
+              <MaterialCommunityIcons
+                name="soccer-field"
+                size={22}
+                color={isDark ? '#fff' : '#000'}
+              />
+              <Text style={[styles.match, stylesDynamic.text]}>
+                {item.match}
+              </Text>
+            </View>
+
+            <View style={styles.rowBetween}>
+              <Text style={[styles.prediction, stylesDynamic.subText]}>
+                Prediction: {item.prediction}
+              </Text>
+              <View style={styles.rowCenter}>
+                <Text style={[styles.outcomeLabel, stylesDynamic.subText]}>
+                  Outcome:{' '}
+                </Text>
+                {item.Outcome === 'Win' ? (
+                  <FontAwesome name="check-circle" size={22} color="green" />
+                ) : item.Outcome === 'Lose' ? (
+                  <FontAwesome name="times-circle" size={22} color="red" />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="dots-horizontal"
+                    size={26}
+                    color="#F8BD00"
+                  />
+                )}
+              </View>
+            </View>
+
+            {userInfo?.role === 'admin' && (
+              <>
+                <TouchableOpacity
+                  style={styles.updateButton}
+                  onPress={() => updateOutcome(item.id, 'Win', 'picks')}
+                >
+                  <Text style={styles.updateButtonText}>Set Outcome to Win</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.updateButton}
+                  onPress={() => updateOutcome(item.id, 'Lose', 'picks')}
+                >
+                  <Text style={styles.updateButtonText}>Set Outcome to Lose</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </>
+        )}
+      </View>
+    );
+  };
+
+  // 🪄 Render with ad every 2 cards
+  const renderItem = ({ item, index }) => (
+    <>
+      {item.punterName
+        ? renderCard({ item, type: 'predictions' })
+        : renderCard({ item, type: 'picks' })}
+      {(index + 1) % 2 === 0 && (
+        <View style={{ alignSelf: 'center', marginVertical: 8 }}>
+          <BannerAd
+            unitId={BANNER_ID}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          />
+        </View>
       )}
-    </View>
+    </>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View >
-        <Text style={styles.title}>TipNGoal Predictions</Text>
-        <View style={styles.dateFilterContainer}>
+    <ScrollView style={[stylesDynamic.bg, { flex: 1, padding: 10 }]}>
+      <Text style={[styles.title, { color: isDark ? '#fff' : '#000', marginTop: 20 }]}>
+        TipNGoal Predictions
+      </Text>
 
-          <Animatable.View animation="pulse" iterationCount="infinite">
-            <TouchableOpacity
-              style={styles.dateButton}
-              onPress={() => filterDataByDate(before)}>
-                 <FontAwesome name="calendar" size={13} color="green" />
-              <Text style={styles.dateButtonText}>
-                {before.format('D MMM YYYY')}
-              </Text>
-            </TouchableOpacity>
-          </Animatable.View>
+      <View style={styles.dateFilterContainer}>
+        <TouchableOpacity
+          style={[styles.dateButton, stylesDynamic.border]}
+          onPress={() => filterDataByDate(yesterday)}
+        >
+          <FontAwesome name="calendar" size={13} color="#4caf50" />
+          <Text style={[styles.dateButtonText, stylesDynamic.text]}>
+            Yesterday’s Predictions
+          </Text>
+        </TouchableOpacity>
 
-          <Animatable.View animation="pulse" iterationCount="infinite">
-            <TouchableOpacity style={styles.dateButton} onPress={() => filterDataByDate(yesterday)}>
-            <FontAwesome name="calendar" size={13} color="green" />
-              <Text style={styles.dateButtonText}>{yesterday.format('D MMM YYYY')}</Text>
-            </TouchableOpacity>
-              
-
-          </Animatable.View>
-
-          <Animatable.View animation="pulse" iterationCount="infinite">
-
-            <TouchableOpacity style={styles.dateButton} onPress={() => filterDataByDate(today)}>
-            <FontAwesome name="calendar" size={13} color="green" />
-              <Text style={styles.dateButtonText}>{today.format('D MMM YYYY')}</Text>
-            </TouchableOpacity>
-
-          
-          </Animatable.View>
-        </View>
-
-        {preloader ? (
-          <ActivityIndicator size="large" color={Theme.colors.green} />
-        ) : (
-          <FlatList
-            data={[...filteredPredictions, ...filteredPicks]}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) =>
-              item.punterName
-                ? renderItem({ item, type: 'predictions' })
-                : renderItem({ item, type: 'picks' })
-            }
-            contentContainerStyle={styles.list}
-          />
-        )}
+        <TouchableOpacity
+          style={[styles.dateButton, stylesDynamic.border]}
+          onPress={() => filterDataByDate(today)}
+        >
+          <FontAwesome name="calendar" size={13} color="#4caf50" />
+          <Text style={[styles.dateButtonText, stylesDynamic.text]}>
+            Today’s Predictions
+          </Text>
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+
+      {preloader ? (
+        <ActivityIndicator size="large" color={Theme.colors.green} />
+      ) : (
+        <FlatList
+          data={[...filteredPredictions, ...filteredPicks]}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={styles.list}
+          scrollEnabled={false}
+        />
+      )}
+    </ScrollView>
   );
 }
 
-
+/* ------------------------- STYLES ------------------------- */
 const styles = StyleSheet.create({
-  container: {flex: 1,backgroundColor: Theme.colors.lightGreen,padding: 10,},
-  title: {fontSize: 24,fontWeight: 'bold',textAlign: 'center',marginVertical: 10},
-  dateFilterContainer: {flexDirection: 'row',justifyContent: 'space-around',marginVertical: 10,},
-  dateButton: {padding: 10,borderRadius: 5,borderWidth:1, borderColor:"#4caf50", flexDirection:"row", gap:3, alignItems:"center" },
-  dateButtonText: {color: Theme.colors.black,},
-  list: {paddingBottom: 20,},
-  card: {backgroundColor: '#ffffff',borderRadius: 10,padding: 15,marginBottom: 10,elevation: 3,shadowColor: '#000000',shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.1,shadowRadius: 4,},
-  punterName: {fontSize: 18,fontWeight: 'bold',color: '#4caf50',},
-  leagueName: {fontSize: 18,fontFamily: Theme.fonts.text800,color: '#4caf50',},
-  match: {fontSize: 16,color: '#151615',marginTop: 5,fontWeight: 'bold',},
-  prediction: {fontSize: 16,color: '#151615',marginTop: 5,fontFamily: Theme.fonts.text600,},
-  date: {fontSize: 14,color: '#777',marginTop: 5,},
-  updateButton: {backgroundColor: "#1dbf73",padding: 10,borderRadius: 8,marginTop: 10,},
-  updateButtonText: {color: "#fff",fontWeight: "bold",textAlign: "center",},
-  iconContainer: {flexDirection: 'row',alignItems: 'center',marginVertical: 10,},
-  noOutcome: {fontSize: 14,color: '#777',},
+  title: { fontSize: 24, fontWeight: 'bold', textAlign: 'center' },
+  dateFilterContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 10,
+  },
+  dateButton: {
+    padding: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: 6,
+    alignItems: 'center',
+  },
+  dateButtonText: { fontSize: 13 },
+  list: { paddingBottom: 20 },
+  card: {
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 10,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
+  rowBetween: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  rowCenter: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  punterName: { fontSize: 16, fontWeight: 'bold' },
+  leagueName: { fontSize: 16, fontWeight: 'bold' },
+  match: { fontSize: 15, fontWeight: 'bold' },
+  prediction: { fontSize: 13, marginTop: 4 },
+  outcomeLabel: { fontSize: 13, fontWeight: 'bold' },
+  updateButton: {
+    backgroundColor: '#1dbf73',
+    padding: 8,
+    borderRadius: 8,
+    marginTop: 8,
+  },
+  updateButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  bookieLogo: { width: 40, height: 40, borderRadius: 20 },
 });
